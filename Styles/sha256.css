@@ -28,8 +28,8 @@ h2 {
 }
 
 textarea {
-    width: 300px;
-    height: 100px;
+    width: 200px; /* Largeur réduite pour s'adapter à la ligne */
+    height: 50px; /* Hauteur réduite */
     padding: 10px;
     font-size: 1rem;
     border: 2px solid #ccc;
@@ -53,16 +53,15 @@ button:hover {
 }
 
 .output {
-    width: 300px;
-    height: 100px;
+    width: 300px; /* Largeur fixe pour la sortie */
+    height: 50px; /* Hauteur réduite */
     padding: 10px;
     font-size: 1rem;
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #fff;
-    margin-top: 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: #333;
+    overflow: auto; /* Permet le défilement si le texte dépasse */
+    white-space: nowrap; /* Empêche le texte de passer à la ligne */
 }
