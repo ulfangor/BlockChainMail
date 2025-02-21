@@ -7,7 +7,9 @@
     <title>SHA-256</title>
 </head>
 <body>
-    <h1>BlockChainMail</h1>
+    <?php
+        include '../Pages/Header.php';
+    ?>
     <h2>SHA-256</h2>
 
     <form method="POST" action="">
