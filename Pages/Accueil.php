@@ -6,6 +6,12 @@
     <title>Accueil</title>
 </head>
 <body>
+    <?php
+        include '../Pages/Header.php';
     
+    ?>
+
+
+
 </body>
 </html>
