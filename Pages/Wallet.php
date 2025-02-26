@@ -2,7 +2,19 @@
 // Démarrage de la session pour stocker les données de transaction
 session_start();
 
-include "../Header.php"; 
+include '../Pages/Header.php'; 
+
+// Réinitialisation du wallet et du mempool si le bouton reset est cliqué
+if (isset($_GET['reset'])) {
+    $randomAddress = bin2hex(random_bytes(16)); // Génère une nouvelle adresse aléatoire
+    $_SESSION['wallet'] = [
+        'balance' => 100, // Solde initial de 100 CMC
+        'address' => hash('sha256', $randomAddress) // Adresse hashée en SHA256
+    ];
+    $_SESSION['mempool'] = []; // Vide le mempool
+    header("Location: " . strtok($_SERVER['REQUEST_URI'], '?')); // Redirige pour éviter la resoumission du formulaire
+    exit();
+}
 
 // Génération d'une adresse de wallet aléatoire et hashée en SHA256
 if (!isset($_SESSION['wallet'])) {
@@ -55,22 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Wallet CMC</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        .header, .footer { padding: 20px; text-align: center; }
-        .footer { display: flex; }
-        .transactions, .mempool { width: 50%; padding: 10px; box-sizing: border-box; }
-        .transactions { background-color: #f4f4f4; }
-        .mempool { background-color: #e2e2e2; }
-        input, button { margin-top: 10px; width: 100%; padding: 10px; box-sizing: border-box; }
-        h1, h2 { margin: 0; }
-    </style>
+    <link rel="stylesheet" href="../Styles/wallet.css">
 </head>
 <body>
     <div class="header">
         <h1>Mon Wallet CMC</h1>
         <p>Solde: <?php echo $_SESSION['wallet']['balance']; ?> CMC</p>
         <p>Adresse: <?php echo $_SESSION['wallet']['address']; ?></p>
+        <a href="?reset=true" class="reset-button">Reset</a>
     </div>
     <div class="footer">
         <div class="transactions">
@@ -86,15 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <h2>Mempool</h2>
             <?php if (!empty($_SESSION['mempool'])): ?>
                 <?php foreach ($_SESSION['mempool'] as $tx): ?>
-                    <p>
-                        <strong>De:</strong> <?php echo substr($tx['from'], 0, 10); ?>...<br>
-                        <strong>À:</strong> <?php echo substr($tx['to'], 0, 10); ?>...<br>
-                        <strong>Montant:</strong> <?php echo $tx['amount']; ?> CMC<br>
-                        <strong>Frais:</strong> <?php echo $tx['fee']; ?> CMC<br>
-                        <strong>Message:</strong> <?php echo $tx['message']; ?><br>
-                        <strong>Hash:</strong> <?php echo substr($tx['hash'], 0, 10); ?>...
-                    </p>
-                    <hr>
+                    <div class="transaction-item">
+                        <p><strong>De:</strong> <?php echo substr($tx['from'], 0, 10); ?>...</p>
+                        <p><strong>À:</strong> <?php echo substr($tx['to'], 0, 10); ?>...</p>
+                        <p><strong>Montant:</strong> <?php echo $tx['amount']; ?> CMC</p>
+                        <p><strong>Frais:</strong> <?php echo $tx['fee']; ?> CMC</p>
+                        <p><strong>Message:</strong> <?php echo $tx['message']; ?></p>
+                        <p><strong>Hash:</strong> <?php echo substr($tx['hash'], 0, 10); ?>...</p>
+                    </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>Aucune transaction en attente.</p>
