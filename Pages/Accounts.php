@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Wallet CMC</title>
-    <link rel="stylesheet" href="../Styles/wallet.css">
+    <link rel="stylesheet" href="../Styles/accounts.css">
 </head>
 <body>
     <div class="header">
