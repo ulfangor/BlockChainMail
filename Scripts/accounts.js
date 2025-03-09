@@ -1,86 +1,142 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialiser la courbe elliptique (secp256k1 est utilisée par Bitcoin et Ethereum)
+    // Initialize elliptic curve 
     const ec = new elliptic.ec('secp256k1');
     
-    // Récupérer les éléments DOM
+    // Get DOM elements
     const accountNameInput = document.getElementById('account-name');
-    const createBtn = document.getElementById('create-btn');
+    const createBtn = document.querySelector('.create-btn');
     const accountsList = document.getElementById('accounts-list');
     const emptyMessage = document.getElementById('empty-message');
     const errorMessage = document.getElementById('error-message');
     
-    // Charger les comptes depuis le localStorage
-    let accounts = JSON.parse(localStorage.getItem('ecdsaAccounts')) || [];
+    // Store accounts locally for UI management
+    let accounts = [];
     
-    // Afficher les comptes existants
-    renderAccounts();
+    // Load accounts from server on page load
+    loadAccounts();
     
-    // Event listener pour le bouton de création
+    // Event listener for create button
     createBtn.addEventListener('click', function() {
         const accountName = accountNameInput.value.trim();
         
         // Validation
         if (!accountName) {
-            showError('Veuillez entrer un nom de compte.');
+            showError('Please enter an account name.');
             return;
         }
         
-        // Vérifier si le nom existe déjà
+        // Check if name already exists
         if (accounts.some(account => account.name === accountName)) {
-            showError('Un compte avec ce nom existe déjà.');
+            showError('An account with this name already exists.');
             return;
         }
         
         try {
-            // Générer une nouvelle paire de clés ECDSA
+            // Generate new ECDSA key pair
             const keyPair = ec.genKeyPair();
             
-            // Extraire les clés publique et privée
+            // Extract public and private keys
             const privateKey = keyPair.getPrivate('hex');
             const publicKey = keyPair.getPublic('hex');
             
-            // Créer le nouveau compte
-            const newAccount = {
-                name: accountName,
-                publicKey: publicKey,
-                privateKey: privateKey
-            };
-            
-            // Ajouter le compte à la liste
-            accounts.push(newAccount);
-            
-            // Sauvegarder dans le localStorage
-            localStorage.setItem('ecdsaAccounts', JSON.stringify(accounts));
-            
-            // Réinitialiser le formulaire
-            accountNameInput.value = '';
-            
-            // Mettre à jour l'affichage
-            renderAccounts();
-            
-            // Masquer les messages d'erreur
-            hideError();
+            // Send to server
+            createAccount(accountName, publicKey, privateKey);
             
         } catch (error) {
-            showError('Erreur lors de la génération de la paire de clés: ' + error.message);
+            showError('Error generating key pair: ' + error.message);
         }
     });
     
-    // Fonction pour afficher les comptes
+    // Function to load accounts from server
+    function loadAccounts() {
+        const formData = new FormData();
+        formData.append('action', 'getAll');
+        
+        fetch('../Data/save_accounts.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                accounts = data.accounts;
+                renderAccounts();
+            } else {
+                showError('Error loading accounts: ' + data.message);
+            }
+        })
+        .catch(error => {
+            showError('Network error: ' + error.message);
+        });
+    }
+    
+    // Function to create account on server
+    function createAccount(name, publicKey, privateKey) {
+        const formData = new FormData();
+        formData.append('action', 'create');
+        formData.append('name', name);
+        formData.append('publicKey', publicKey);
+        formData.append('privateKey', privateKey);
+        
+        fetch('../Data/save_accounts.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                accounts = data.accounts;
+                accountNameInput.value = '';
+                renderAccounts();
+                hideError();
+            } else {
+                showError('Error creating account: ' + data.message);
+            }
+        })
+        .catch(error => {
+            showError('Network error: ' + error.message);
+        });
+    }
+    
+    // Function to delete account on server
+    function deleteAccount(index) {
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('index', index);
+        
+        fetch('../Data/save_accounts.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                accounts = data.accounts;
+                renderAccounts();
+            } else {
+                showError('Error deleting account: ' + data.message);
+            }
+        })
+        .catch(error => {
+            showError('Network error: ' + error.message);
+        });
+    }
+    
+    // Function to render accounts
     function renderAccounts() {
-        // Vider la liste
+        // Clear list
         accountsList.innerHTML = '';
         
-        // Afficher le message "vide" si nécessaire
+        // Show empty message if needed
         if (accounts.length === 0) {
             emptyMessage.style.display = 'block';
             return;
         }
         
-        // Cacher le message "vide"
+        // Hide empty message
         emptyMessage.style.display = 'none';
         
-        // Ajouter chaque compte à la liste
+        // Add each account to the list
         accounts.forEach((account, index) => {
             const row = document.createElement('tr');
             
@@ -96,24 +152,16 @@ document.addEventListener('DOMContentLoaded', function() {
             accountsList.appendChild(row);
         });
         
-        // Ajouter les event listeners pour les boutons de suppression
+        // Add event listeners for delete buttons
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const index = parseInt(this.getAttribute('data-index'));
-                
-                // Supprimer le compte
-                accounts.splice(index, 1);
-                
-                // Mettre à jour le localStorage
-                localStorage.setItem('ecdsaAccounts', JSON.stringify(accounts));
-                
-                // Mettre à jour l'affichage
-                renderAccounts();
+                deleteAccount(index);
             });
         });
     }
     
-    // Fonctions pour gérer les messages d'erreur
+    // Functions to handle error messages
     function showError(message) {
         errorMessage.textContent = message;
         errorMessage.style.display = 'block';
