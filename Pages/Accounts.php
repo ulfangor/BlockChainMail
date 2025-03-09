@@ -1,108 +1,49 @@
 <?php
-// Démarrage de la session pour stocker les données de transaction
-session_start();
 
-include '../Pages/Header.php'; 
-
-// Réinitialisation du wallet et du mempool si le bouton reset est cliqué
-if (isset($_GET['reset'])) {
-    $randomAddress = bin2hex(random_bytes(16)); // Génère une nouvelle adresse aléatoire
-    $_SESSION['wallet'] = [
-        'balance' => 100, // Solde initial de 100 CMC
-        'address' => hash('sha256', $randomAddress) // Adresse hashée en SHA256
-    ];
-    $_SESSION['mempool'] = []; // Vide le mempool
-    header("Location: " . strtok($_SERVER['REQUEST_URI'], '?')); // Redirige pour éviter la resoumission du formulaire
-    exit();
-}
-
-// Génération d'une adresse de wallet aléatoire et hashée en SHA256
-if (!isset($_SESSION['wallet'])) {
-    $randomAddress = bin2hex(random_bytes(16)); // Génère une chaîne aléatoire
-    $_SESSION['wallet'] = [
-        'balance' => 100, // Solde initial de 100 CMC
-        'address' => hash('sha256', $randomAddress) // Adresse hashée en SHA256
-    ];
-}
-
-// Initialisation du mempool (stockage des transactions)
-if (!isset($_SESSION['mempool'])) {
-    $_SESSION['mempool'] = [];
-}
-
-// Fonction pour créer une transaction
-function createTransaction($from, $to, $amount, $message) {
-    $fee = 0.01 * $amount; // Frais de transaction de 1%
-    $total = $amount + $fee;
-    if ($_SESSION['wallet']['balance'] >= $total) {
-        $transaction = [
-            'from' => $from,
-            'to' => $to,
-            'amount' => $amount,
-            'fee' => $fee,
-            'message' => $message,
-            'hash' => hash('sha256', $from . $to . $amount . $message . time()) // Hash de la transaction
-        ];
-        $_SESSION['mempool'][] = $transaction;
-        $_SESSION['wallet']['balance'] -= $total;
-        return true;
-    }
-    return false;
-}
-
-// Traitement du formulaire de transaction
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $to = $_POST['to'];
-    $amount = $_POST['amount'];
-    $message = $_POST['message'];
-    if (createTransaction($_SESSION['wallet']['address'], $to, $amount, $message)) {
-        echo "<script>alert('Transaction réussie !');</script>";
-    } else {
-        echo "<script>alert('Échec de la transaction : Solde insuffisant.');</script>";
-    }
-}
+include "../Pages/Header.php"
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Wallet CMC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockChainMail</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elliptic/6.5.4/elliptic.min.js"></script>
     <link rel="stylesheet" href="../Styles/accounts.css">
 </head>
 <body>
-    <div class="header">
-        <h1>Mon Wallet CMC</h1>
-        <p>Solde: <?php echo $_SESSION['wallet']['balance']; ?> CMC</p>
-        <p>Adresse: <?php echo $_SESSION['wallet']['address']; ?></p>
-        <a href="?reset=true" class="reset-button">Reset</a>
-    </div>
-    <div class="footer">
-        <div class="transactions">
-            <h2>Effectuer une transaction</h2>
-            <form method="post">
-                <input type="text" name="to" placeholder="Hash du destinataire" required><br>
-                <input type="number" name="amount" placeholder="Montant" required><br>
-                <input type="text" name="message" placeholder="Message"><br>
-                <button type="submit">Valider</button>
-            </form>
+    <h1>ECDSA ACCOUNTS</h1>
+    
+    <div class="container1">
+        <div class="alert" id="error-message"></div>
+        
+        <div class="form-group">
+            <label for="account-name"><u>Create an account</u></label>
+            <input type="text" id="account-name" placeholder="Enter account name">
         </div>
-        <div class="mempool">
-            <h2>Mempool</h2>
-            <?php if (!empty($_SESSION['mempool'])): ?>
-                <?php foreach ($_SESSION['mempool'] as $tx): ?>
-                    <div class="transaction-item">
-                        <p><strong>De:</strong> <?php echo substr($tx['from'], 0, 10); ?>...</p>
-                        <p><strong>À:</strong> <?php echo substr($tx['to'], 0, 10); ?>...</p>
-                        <p><strong>Montant:</strong> <?php echo $tx['amount']; ?> CMC</p>
-                        <p><strong>Frais:</strong> <?php echo $tx['fee']; ?> CMC</p>
-                        <p><strong>Message:</strong> <?php echo $tx['message']; ?></p>
-                        <p><strong>Hash:</strong> <?php echo substr($tx['hash'], 0, 10); ?>...</p>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Aucune transaction en attente.</p>
-            <?php endif; ?>
+        
+        <button class="create-btn">Create</button>
+    </div>
+    
+    <div class="container2">
+        <label><u>Existing accounts</u></label>
+        <div id="accounts-container">
+            <table id="accounts-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Public key</th>
+                        <th>Private key</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="accounts-list"></tbody>
+            </table>
+            <div id="empty-message" class="empty-message">No account has been created</div>
         </div>
     </div>
+    
+    <script src="../Scripts/accounts.js"></script>
 </body>
 </html>
