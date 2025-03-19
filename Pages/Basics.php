@@ -10,7 +10,7 @@
     <?php
         include '../Pages/Header.php';
     ?>
-    <h2>SHA-256</h2>
+    <h1>SHA-256</h1>
 
     <form method="POST" action="">
         <div class="input-container">
