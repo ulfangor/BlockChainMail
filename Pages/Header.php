@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlockChainMail</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="../Styles/stats.css"
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body class="bg-gray-900 text-white pt-16">
@@ -25,7 +26,6 @@
                             <a href="/BlockChainMail/Pages/Mining.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Mining</a>
                             <a href="/BlockChainMail/Pages/Blockchain.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Blockchain</a>
                             <a href="/BlockChainMail/Pages/Balances.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Balances</a>
-                            <a href="/BlockChainMail/Pages/Consensus.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Consensus</a>
                             <a href="/BlockChainMail/Pages/ChainInternals.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Chain Internals</a>
                         </div>
                     </div>
@@ -34,5 +34,8 @@
         </div>
     </nav>
 </header>
+
+<?php include "../Pages/Stats.php" ?>
+
 </body>
 </html>

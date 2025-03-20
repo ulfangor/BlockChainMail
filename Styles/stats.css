@@ -1,0 +1,39 @@
+.stats-container{
+    background-color: rgba(31,41,55);
+    color: white;
+    text-align: center;
+    margin-top: 35px;
+    margin-left: 35px;
+    margin-right: 35px;
+    border-radius: 7px;
+    padding-top: 10px;
+}
+
+h1{
+    font-style: italic;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.containers-container{
+    display: flex;
+    padding-top: 30px;
+}
+
+.container{
+    background-color: rgba(17,24,39);
+    margin: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+h2{
+    font-weight: bold;
+    font-size: 25px;
+    margin-bottom: 7px;
+    margin-top: 5px;
+}
+
+h3{
+    font-style: italic;
+}

@@ -8,7 +8,6 @@
 <body>
     <?php
         include '../Pages/Header.php';
-    
     ?>
 
 
