@@ -15,7 +15,7 @@
                 <h3> Currency </h3>
             </div>
             <div class="container">
-                <h2> 0 </h2>
+                <h2 id="blocks-value"> 0 </h2>
                 <h3> Blocks </h3>
             </div>
             <div class="container">
@@ -23,15 +23,16 @@
                 <h3> Difficulty </h3>
             </div>
             <div class="container">
-                <h2> 0 </h2>
-                <h3> Transactions </h3>
+                <h2 id="coinbase-value"> 50 </h2>
+                <h3> CoinBase Value </h3>
             </div>
             <div class="container">
-                <h2> 0 </h2>
+                <h2 id="current-value"> 0 </h2>
                 <h3> Current Value </h3>
             </div>
         </div>
         
     </div>
+    <script src="../Scripts/stats.js"></script>
 </body>
 </html>
