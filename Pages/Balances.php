@@ -29,7 +29,7 @@ $accounts = getAccounts();
     <link rel="stylesheet" href="../Styles/balances.css">
 </head>
 <body>
-    <h4>Addresses & Balances</h4>
+    <h1>Addresses & Balances</h1>
     
     <div class="balances-container">
         <?php if (empty($accounts)): ?>
