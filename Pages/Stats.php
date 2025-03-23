@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats</title>
+    <title>BlockChainMail</title>
     <link rel="stylesheet" href="../Styles/stats.css">
 </head>
 <body>

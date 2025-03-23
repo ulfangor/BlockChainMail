@@ -24,52 +24,14 @@ $accounts = getAccounts();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Viewer - BlockChainMail</title>
+    <title>BlockChainMail</title>
     <link rel="stylesheet" href="../Styles/accounts.css">
-    <style>
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .balance-positive {
-            color: green;
-            font-weight: bold;
-        }
-        
-        .balance-zero {
-            color: #888;
-        }
-        
-        .key-cell {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        .key-cell:hover {
-            overflow: visible;
-            white-space: normal;
-            word-break: break-all;
-        }
-        
-        .empty-message {
-            text-align: center;
-            padding: 20px;
-            color: #888;
-            font-style: italic;
-        }
-    </style>
+    <link rel="stylesheet" href="../Styles/balances.css">
 </head>
 <body>
-    <h1>Addresses & Balances</h1>
+    <h4>Addresses & Balances</h4>
     
-    <div class="container">
+    <div class="balances-container">
         <?php if (empty($accounts)): ?>
             <div class="empty-message">No accounts found in the system.</div>
         <?php else: ?>
