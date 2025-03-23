@@ -23,6 +23,13 @@
     white-space: nowrap;
 }
 
+.key-cell2 {
+    text-align: center;
+    font-family: monospace;
+    word-break: break-all;
+    max-width: 300px;
+}
+
 .key-cell:hover {
     overflow: visible;
     white-space: normal;

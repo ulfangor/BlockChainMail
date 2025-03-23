@@ -22,11 +22,11 @@
                             <a href="/BlockChainMail/Pages/Accueil.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Accueil</a>
                             <a href="/BlockChainMail/Pages/Basics.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Basics</a>
                             <a href="/BlockChainMail/Pages/Accounts.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Accounts</a>
+                            <a href="/BlockChainMail/Pages/Balances.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Balances</a>
                             <a href="/BlockChainMail/Pages/Mempool.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Mempool</a>
                             <a href="/BlockChainMail/Pages/Mining.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Mining</a>
                             <a href="/BlockChainMail/Pages/Blockchain.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Blockchain</a>
-                            <a href="/BlockChainMail/Pages/Balances.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Balances</a>
-                            <a href="/BlockChainMail/Pages/ChainInternals.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Chain Internals</a>
+                            <a href="/BlockChainMail/Pages/MiniGame.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Mini-Game</a>
                         </div>
                     </div>
                 </div>

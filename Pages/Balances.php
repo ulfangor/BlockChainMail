@@ -38,13 +38,15 @@ $accounts = getAccounts();
             <table class="accounts-table" width="100%">
                 <thead>
                     <tr>
-                        <th>Address</th>
+                        <th>Name</th>
+                        <th>Address (Public Key)</th>
                         <th>Balance (in ChainMailCoins)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($accounts as $account): ?>
                         <tr>
+                            <td class="key-cell2"><?php echo htmlspecialchars($account['name']); ?></td>
                             <td class="key-cell"><?php echo htmlspecialchars($account['publicKey']); ?></td>
                             <td text-align='right' class="<?php echo $account['balance']> 0 ? 'balance-positive' : 'balance-zero'; ?>">
                                 <?php echo isset($account['balance']) ? htmlspecialchars($account['balance']) : '0'; ?>
