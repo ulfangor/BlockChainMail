@@ -4,64 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlockChainMail</title>
-    <style>
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        select, input, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .buttons {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 15px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-        }
-        .success {
-            color: green;
-            margin-top: 10px;
-        }
-        .transaction-list {
-            margin-top: 30px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <link rel="stylesheet" href="../Styles/mempool.css">
 </head>
 <body>
     <?php
-    //include '../Pages/Header.php';
+    
+    session_start();
+    include '../Pages/Header.php';
     
     // Fonction pour charger les comptes depuis le fichier JSON
     function loadAccounts() {
@@ -73,30 +22,104 @@
         return [];
     }
     
+    // Fonction pour sauvegarder les comptes dans le fichier JSON
+    function saveAccounts($accounts) {
+        $accountsFile = '../Data/accounts.json';
+        file_put_contents($accountsFile, json_encode($accounts, JSON_PRETTY_PRINT));
+    }
+    
+    // Fonction pour mettre à jour le solde d'un compte
+    function updateAccountBalance($publicKey, $amount) {
+        $accounts = loadAccounts();
+        foreach ($accounts as &$account) {
+            if ($account['publicKey'] === $publicKey) {
+                $account['balance'] -= $amount;
+                break;
+            }
+        }
+        saveAccounts($accounts);
+    }
+    
     // Fonction pour charger les transactions du mempool
     function loadMempool() {
         $mempoolFile = '../Data/mempool.json';
         if (file_exists($mempoolFile)) {
             $mempoolJson = file_get_contents($mempoolFile);
-            return json_decode($mempoolJson, true);
+            return json_decode($mempoolJson, true) ?: [];
         }
         return [];
     }
     
+    // Fonction pour sauvegarder le mempool
+    function saveMempool($mempool) {
+        $mempoolFile = '../Data/mempool.json';
+        file_put_contents($mempoolFile, json_encode($mempool, JSON_PRETTY_PRINT));
+    }
+    
+    // Fonction pour charger le bloc candidat
+    function loadCandidateBlock() {
+        $candidateFile = '../Data/candidate.json';
+        if (file_exists($candidateFile)) {
+            $candidateJson = file_get_contents($candidateFile);
+            $candidateBlock = json_decode($candidateJson, true);
+            
+            // Vérifier si le bloc candidat a la structure attendue
+            if (!is_array($candidateBlock) || empty($candidateBlock) || !isset($candidateBlock[0]['transactions'])) {
+                // Structure incorrecte, créer un bloc par défaut
+                $candidateBlock = [
+                    [
+                        "index" => "0",
+                        "nonce" => "0",
+                        "previous_hash" => "none",
+                        "merkle_root" => "none",
+                        "transactions" => [],
+                        "block_hash" => "none"
+                    ]
+                ];
+            }
+        } else {
+            // Si le fichier n'existe pas, créer un bloc candidat par défaut
+            $candidateBlock = [
+                [
+                    "index" => "0",
+                    "nonce" => "0",
+                    "previous_hash" => "none",
+                    "merkle_root" => "none",
+                    "transactions" => [],
+                    "block_hash" => "none"
+                ]
+            ];
+        }
+        
+        saveCandidateBlock($candidateBlock);
+        return $candidateBlock;
+    }
+    
+    // Fonction pour sauvegarder le bloc candidat
+    function saveCandidateBlock($candidateBlock) {
+        $candidateFile = '../Data/candidate.json';
+        file_put_contents($candidateFile, json_encode($candidateBlock, JSON_PRETTY_PRINT));
+    }
+    
     // Fonction pour sauvegarder une transaction dans le mempool
     function saveTransaction($transaction) {
-        $mempoolFile = '../Data/mempool.json';
         $mempool = loadMempool();
         
-        // Générer le hash de la transaction
-        $transactionData = $transaction['sender'] . $transaction['receiver'] . $transaction['amount'] . $transaction['fee'] . $transaction['message'];
+        // timestamp
+        $transaction['timestamp'] = time();
+
+        // hash de la transaction
+        $transactionData = $transaction['sender'] . $transaction['receiver'] . $transaction['amount'] . $transaction['fee'] . $transaction['message'] . $transaction['timestamp'];
         $transaction['hash'] = hash('sha256', $transactionData);
         
         // Ajouter la transaction au mempool
         $mempool[] = $transaction;
         
         // Sauvegarder le mempool mis à jour
-        file_put_contents($mempoolFile, json_encode($mempool, JSON_PRETTY_PRINT));
+        saveMempool($mempool);
+        
+        // Mettre à jour le solde de l'expéditeur
+        updateAccountBalance($transaction['sender'], ($transaction['amount'] + $transaction['fee']));
         
         return $transaction['hash'];
     }
@@ -106,7 +129,7 @@
     $success = '';
     
     // Traitement du formulaire de transaction
-    if (isset($_POST['submit'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $sender = $_POST['sender'];
         $receiver = $_POST['receiver'];
         $amount = floatval($_POST['amount']);
@@ -115,7 +138,9 @@
         
         // Vérifier que l'expéditeur et le destinataire sont différents
         if ($sender === $receiver) {
-            $error = "L'expéditeur et le destinataire ne peuvent pas être identiques.";
+            $_SESSION['error'] = "The sender and the receiver cannot be the same.";
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit();
         } else {
             // Charger les comptes
             $accounts = loadAccounts();
@@ -143,23 +168,122 @@
                 
                 // Sauvegarder la transaction dans le mempool
                 $transactionHash = saveTransaction($transaction);
-                $success = "Transaction créée avec succès! Hash: " . $transactionHash;
+
+                // Store success message in session
+                $success = "Transaction completed ! Hash: " . $transactionHash;
+                $_SESSION['success'] = "Transaction completed ! Hash: " . $transactionHash;
+                
+                // Redirect to prevent resubmission
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit();
             } else {
-                $error = "Solde insuffisant pour effectuer cette transaction.";
+                $error = "Balance too low to complete this transaction";
+                $_SESSION['error'] = "Balance too low to complete this transaction";
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit();
             }
         }
     }
+
+    // Retrieve and clear session messages
+    $error = isset($_SESSION['error']) ? $_SESSION['error'] : '';
+    $success = isset($_SESSION['success']) ? $_SESSION['success'] : '';
+    unset($_SESSION['error']);
+    unset($_SESSION['success']);
     
-    // Charger les comptes et le mempool pour l'affichage
+    // Traitement des actions sur les transactions du mempool
+    if (isset($_POST['delete_from_mempool'])) {
+        $transactionHash = $_POST['transaction_hash'];
+        $mempool = loadMempool();
+        
+        // Trouver et supprimer la transaction
+        foreach ($mempool as $key => $transaction) {
+            if ($transaction['hash'] === $transactionHash) {
+                // Rembourser l'expéditeur (annuler le débit)
+                updateAccountBalance($transaction['sender'], -($transaction['amount'] + $transaction['fee']));
+                unset($mempool[$key]);
+                break;
+            }
+        }
+        
+        // Réindexer le tableau et sauvegarder
+        $mempool = array_values($mempool);
+        saveMempool($mempool);
+        $success = "Transaction deleted from mempool.";
+    }
+    
+    // Traitement de l'ajout d'une transaction au bloc candidat
+    if (isset($_POST['add_to_candidate'])) {
+        $transactionHash = $_POST['transaction_hash'];
+        $mempool = loadMempool();
+        $candidateBlock = loadCandidateBlock();
+        
+        // Trouver la transaction dans le mempool
+        foreach ($mempool as $key => $transaction) {
+            if ($transaction['hash'] === $transactionHash) {
+                // Ajouter la transaction au bloc candidat
+                $candidateBlock[0]['transactions'][] = $transaction;
+                
+                // Supprimer la transaction du mempool
+                unset($mempool[$key]);
+                break;
+            }
+        }
+        
+        // Réindexer le mempool et sauvegarder
+        $mempool = array_values($mempool);
+        saveMempool($mempool);
+        
+        // Sauvegarder le bloc candidat
+        saveCandidateBlock($candidateBlock);
+        $success = "Transaction added to candidate block";
+    }
+    
+    // Traitement du retrait d'une transaction du bloc candidat
+    if (isset($_POST['remove_from_candidate'])) {
+        $transactionHash = $_POST['transaction_hash'];
+        $candidateBlock = loadCandidateBlock();
+        $mempool = loadMempool();
+        
+        // Trouver la transaction dans le bloc candidat
+        foreach ($candidateBlock[0]['transactions'] as $key => $transaction) {
+            if ($transaction['hash'] === $transactionHash) {
+                // Ajouter la transaction au mempool
+                $mempool[] = $transaction;
+                
+                // Supprimer la transaction du bloc candidat
+                unset($candidateBlock[0]['transactions'][$key]);
+                break;
+            }
+        }
+        
+        // Réindexer les transactions du bloc candidat et sauvegarder
+        $candidateBlock[0]['transactions'] = array_values($candidateBlock[0]['transactions']);
+        saveCandidateBlock($candidateBlock);
+        
+        // Sauvegarder le mempool
+        saveMempool($mempool);
+        $success = "Transaction removed from candidate block.";
+    }
+    
+    // Charger les comptes, le mempool et le bloc candidat pour l'affichage
     $accounts = loadAccounts();
     $mempool = loadMempool();
+    $candidateBlock = loadCandidateBlock();
+    
+    // Calcul des informations du bloc candidat
+    $transactionCount = count($candidateBlock[0]['transactions']);
+    $totalValue = 0;
+    foreach ($candidateBlock[0]['transactions'] as $transaction) {
+        $totalValue += $transaction['amount'];
+    }
     ?>
     
     <div class="container">
-        <h1>Mempool - Transactions en attente</h1>
+        <h1>Mempool</h1>
         
         <div class="transaction-form">
-            <h2>Effectuer une transaction</h2>
+            <h2>Make a transaction</h2>
             
             <?php if ($error): ?>
                 <div class="error"><?php echo $error; ?></div>
@@ -171,21 +295,21 @@
             
             <form method="post" action="">
                 <div class="form-group">
-                    <label for="sender">Expéditeur:</label>
+                    <label for="sender">Sender:</label>
                     <select name="sender" id="sender" required>
-                        <option value="">Sélectionnez un expéditeur</option>
+                        <option value="">Select a sender</option>
                         <?php foreach ($accounts as $account): ?>
                             <option value="<?php echo $account['publicKey']; ?>">
-                                <?php echo $account['name'] . ' (' . $account['balance'] . ' coins)'; ?>
+                                <?php echo $account['name'] . ' (' . $account['balance'] . ' CMC)'; ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="receiver">Destinataire:</label>
+                    <label for="receiver">Receiver:</label>
                     <select name="receiver" id="receiver" required>
-                        <option value="">Sélectionnez un destinataire</option>
+                        <option value="">Select a receiver</option>
                         <?php foreach ($accounts as $account): ?>
                             <option value="<?php echo $account['publicKey']; ?>">
                                 <?php echo $account['name']; ?>
@@ -195,42 +319,44 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="amount">Montant:</label>
+                    <label for="amount">Amount:</label>
                     <input type="number" name="amount" id="amount" step="0.01" min="0.01" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="fee">Frais de transaction:</label>
+                    <label for="fee">Transaction fee:</label>
                     <input type="number" name="fee" id="fee" step="0.01" min="0" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="message">Message (facultatif):</label>
+                    <label for="message">Message (optional):</label>
                     <textarea name="message" id="message" rows="3"></textarea>
                 </div>
                 
                 <div class="buttons">
-                    <button type="submit" name="submit">Valider la transaction</button>
+                    <button type="submit" name="submit">Complete transaction</button>
                     <button type="reset">Clear</button>
                 </div>
             </form>
         </div>
         
-        <div class="transaction-list">
-            <h2>MEMPOOL - Transactions en attente</h2>
+        <div class="transaction-list section">
+            <h2>MEMPOOL</h2>
             
             <?php if (empty($mempool)): ?>
-                <p>Aucune transaction en attente dans le mempool.</p>
+                <p>No transaction currently in mempool.</p>
             <?php else: ?>
                 <table>
                     <thead>
                         <tr>
-                            <th>Expéditeur</th>
-                            <th>Destinataire</th>
-                            <th>Montant</th>
-                            <th>Frais</th>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Amount</th>
+                            <th>Fee</th>
                             <th>Message</th>
+                            <th>Timestamp</th>
                             <th>Hash</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -240,7 +366,7 @@
                                     <?php 
                                     foreach ($accounts as $account) {
                                         if ($account['publicKey'] === $transaction['sender']) {
-                                            echo $account['name'];
+                                            echo $account['name'] . ' ('.$account['publicKey'] . ')';
                                             break;
                                         }
                                     }
@@ -250,7 +376,7 @@
                                     <?php 
                                     foreach ($accounts as $account) {
                                         if ($account['publicKey'] === $transaction['receiver']) {
-                                            echo $account['name'];
+                                            echo $account['name'] . ' ('.$account['publicKey'] . ')';
                                             break;
                                         }
                                     }
@@ -259,11 +385,88 @@
                                 <td><?php echo $transaction['amount']; ?></td>
                                 <td><?php echo $transaction['fee']; ?></td>
                                 <td><?php echo $transaction['message']; ?></td>
+                                <td><?php echo date('Y-m-d H:i:s', $transaction['timestamp']); ?></td>
                                 <td><?php echo $transaction['hash']; ?></td>
+                                <td>
+                                    <form method="post" style="display: inline;">
+                                        <input type="hidden" name="transaction_hash" value="<?php echo $transaction['hash']; ?>">
+                                        <button type="submit" name="add_to_candidate" class="action-btn">Add to block</button>
+                                    </form>
+                                    <form method="post" style="display: inline;">
+                                        <input type="hidden" name="transaction_hash" value="<?php echo $transaction['hash']; ?>">
+                                        <button type="submit" name="delete_from_mempool" class="action-btn">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+            <?php endif; ?>
+        </div>
+        
+        <div class="candidate-block section">
+            <h2>CANDIDATE BLOCK</h2>
+            
+            <?php if (empty($candidateBlock[0]['transactions'])): ?>
+                <p>No transaction currently in candidate block.</p>
+            <?php else: ?>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Amount</th>
+                            <th>Fee</th>
+                            <th>Message</th>
+                            <th>Timestamp</th>
+                            <th>Hash</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($candidateBlock[0]['transactions'] as $transaction): ?>
+                            <tr>
+                                <td>
+                                    <?php 
+                                    foreach ($accounts as $account) {
+                                        if ($account['publicKey'] === $transaction['sender']) {
+                                            echo $account['name'] . ' ('.$account['publicKey'] . ')';
+                                            break;
+                                        }
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php 
+                                    foreach ($accounts as $account) {
+                                        if ($account['publicKey'] === $transaction['receiver']) {
+                                            echo $account['name'] . ' ('.$account['publicKey'] . ')';
+                                            break;
+                                        }
+                                    }
+                                    ?>
+                                </td>
+                                <td><?php echo $transaction['amount']; ?></td>
+                                <td><?php echo $transaction['fee']; ?></td>
+                                <td><?php echo $transaction['message']; ?></td>
+                                <td><?php echo date('Y-m-d H:i:s', $transaction['timestamp']); ?></td>
+                                <td><?php echo $transaction['hash']; ?></td>
+                                <td>
+                                    <form method="post">
+                                        <input type="hidden" name="transaction_hash" value="<?php echo $transaction['hash']; ?>">
+                                        <button type="submit" name="remove_from_candidate" class="action-btn">Remove from block</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                
+                <div class="info-box">
+                    <div class="info-item"><strong>Index:</strong> <?php echo $candidateBlock[0]['index']; ?></div>
+                    <div class="info-item"><strong>Transactions:</strong> <?php echo $transactionCount; ?></div>
+                    <div class="info-item"><strong>Value:</strong> <?php echo $totalValue; ?> CMC</div>
+                </div>
             <?php endif; ?>
         </div>
     </div>
