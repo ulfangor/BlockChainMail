@@ -12,28 +12,31 @@
     ?>
     
     <div class="basics-body">
-        <h1>SHA-256</h1>
 
-        <form method="POST" action="">
-            <div class="input-container">
-                <textarea name="rawText" placeholder="Entrez votre texte ici..."></textarea>
-                <button type="submit" name="hashButton">HASH</button>
-                <div class="output">
-                    <?php
-                    if (isset($_POST['hashButton'])) {
-                        // Récupérer le texte saisi
-                        $rawText = $_POST['rawText'];
+        <div class="sha-container">
+            <h1>SHA-256</h1>
 
-                        // Hasher le texte en SHA-256
-                        $hashedText = hash('sha256', $rawText);
+            <form method="POST" action="">
+                <div class="input-container">
+                    <textarea name="rawText" placeholder="Entrez votre texte ici..."></textarea>
+                    <button type="submit" name="hashButton">HASH</button>
+                    <div class="output">
+                        <?php
+                        if (isset($_POST['hashButton'])) {
+                            // Récupérer le texte saisi
+                            $rawText = $_POST['rawText'];
 
-                        // Afficher le résultat
-                        echo htmlspecialchars($hashedText);
-                    }
-                    ?>
+                            // Hasher le texte en SHA-256
+                            $hashedText = hash('sha256', $rawText);
+
+                            // Afficher le résultat
+                            echo htmlspecialchars($hashedText);
+                        }
+                        ?>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </body>
 </html>
