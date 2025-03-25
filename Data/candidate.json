@@ -4,7 +4,17 @@
         "nonce": "0",
         "previous_hash": "none",
         "merkle_root": "none",
-        "transactions": [],
+        "transactions": [
+            {
+                "sender": "f295fbb4b086816cf2d39c70be1cf96667f7cd15cd2afd17597a93914b6ad245",
+                "receiver": "c9277bbc3af0db164f8d70cd26128f98020ed9ddfbbad0f018c6a50b70f9bd53",
+                "amount": 788,
+                "fee": 1,
+                "message": "rich",
+                "hash": "c265060273dcbb32a76f60a554ea3171ad48c94f03806eec5c671cd31397fe94",
+                "timestamp": 1742939942
+            }
+        ],
         "block_hash": "none"
     }
 ]

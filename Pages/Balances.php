@@ -39,7 +39,7 @@ $accounts = getAccounts();
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Address (Public Key)</th>
+                        <th>Address</th>
                         <th>Balance (in ChainMailCoins)</th>
                     </tr>
                 </thead>
@@ -47,7 +47,7 @@ $accounts = getAccounts();
                     <?php foreach ($accounts as $account): ?>
                         <tr>
                             <td class="key-cell2"><?php echo htmlspecialchars($account['name']); ?></td>
-                            <td class="key-cell"><?php echo htmlspecialchars($account['publicKey']); ?></td>
+                            <td class="key-cell"><?php echo htmlspecialchars($account['address']); ?></td>
                             <td text-align='right' class="<?php echo $account['balance']> 0 ? 'balance-positive' : 'balance-zero'; ?>">
                                 <?php echo isset($account['balance']) ? htmlspecialchars($account['balance']) : '0'; ?>
                             </td>

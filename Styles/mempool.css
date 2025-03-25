@@ -1,8 +1,31 @@
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+.mempool-main-container {
+    color: black;
+    margin-top: 35px;
+    margin-left: 35px;
+    margin-right: 35px;
+    margin-bottom: 35px;
+    border-radius: 7px;
+    padding-top: 10px;
 }
+
+.mempool-main-container h1 {
+    color: rgb(255, 255, 255)!important;
+    padding: 7px;
+    font-size: 30px;
+}
+
+.transaction-form {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 7px;
+}
+
+.transaction-form h2, .transaction-list-container h2, .candidate-block-container h2 {
+    text-decoration: underline;
+    margin-bottom: 20px;
+}
+
 .form-group {
     margin-bottom: 15px;
 }
@@ -17,9 +40,28 @@ select, input, textarea {
     border: 1px solid #ddd;
     border-radius: 4px;
 }
+
+
 .buttons {
     margin-top: 20px;
 }
+
+.complete-btn, .clear-btn {
+    background-color: #2c54d8;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 17px;
+    transition: background-color 0.3s;
+    margin-right: 15px;
+}
+
+.complete-btn:hover, .clear-btn:hover {
+    background-color: #2648b8;
+}
+
 button {
     padding: 10px 15px;
     margin-right: 10px;
@@ -33,40 +75,164 @@ button {
     color: green;
     margin-top: 10px;
 }
-.transaction-list {
-    margin-top: 30px;
+.transaction-list-container {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 7px;
 }
-table {
+
+.transaction-list-container table,
+.candidate-block-container table {
     width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 15px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 7px;
+    overflow: hidden;
+    border: 2px solid #ddd;
 }
-table, th, td {
-    border: 1px solid #ddd;
+
+.transaction-list-container thead,
+.candidate-block-container thead {
+    background-color: #fff;
+    color: black;
 }
-th, td {
-    padding: 10px;
-    text-align: left;
+
+.transaction-list-container th,
+.candidate-block-container th {
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9em;
+    border-bottom: 2px solid #ddd;
+    border-right: 2px solid #ddd;
 }
-th {
-    background-color: #f2f2f2;
+
+.transaction-list-container th:last-child,
+.candidate-block-container th:last-child {
+    border-right: none;
 }
-.action-btn {
-    padding: 5px 10px;
-    margin-right: 5px;
-    cursor: pointer;
+
+.transaction-list-container td,
+.candidate-block-container td {
+    padding: 12px 15px;
+    border-bottom: 2px solid #ddd;
+    border-right: 2px solid #ddd;
+    background-color: #fff;
+    font-size: 13px;
+    text-align: center;
+    color: #000000;
 }
-.section {
-    margin-top: 40px;
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
+
+.transaction-list-container td:last-child,
+.candidate-block-container td:last-child {
+    border-right: none;
 }
-.info-box {
-    background-color: #f9f9f9;
-    padding: 15px;
+
+.transaction-list-container tr:nth-child(even) td,
+.candidate-block-container tr:nth-child(even) td {
+    background-color: #fff;
+}
+
+.key-cell {
+    font-family: monospace;
+    font-size: 0.8em;
+    word-break: break-all;
+    max-width: 150px;
+    color: #fff;
+}
+
+.transaction-list-container td[class*="actions"],
+.candidate-block-container td[class*="actions"] {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 15px;
+}
+
+.add-btn, .delete-btn, .remove-btn {
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 6px 10px;
     border-radius: 4px;
-    margin-top: 20px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
 }
-.info-item {
-    margin-bottom: 10px;
+
+.add-btn {
+    background-color: rgb(3, 211, 3);
+}
+
+.delete-btn, .remove-btn {
+    background-color: red;
+}
+
+.add-btn:hover {
+    background-color: rgb(4, 134, 4);
+}
+
+.delete-btn:hover, .remove-btn:hover  {
+    background-color: rgb(172, 2, 2);
+}
+
+
+/* Responsive Table */
+@media screen and (max-width: 1024px) {
+    .transaction-list-container table,
+    .candidate-block-container table {
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .transaction-list-container table,
+    .candidate-block-container table {
+        font-size: 0.8em;
+    }
+    
+    .transaction-list-container th,
+    .candidate-block-container th {
+        padding: 8px 10px;
+    }
+    
+    .transaction-list-container td,
+    .candidate-block-container td {
+        padding: 8px 10px;
+    }
+
+    .transaction-list-container td[class*="actions"],
+    .candidate-block-container td[class*="actions"] {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .transaction-list-container,
+    .candidate-block-container {
+        overflow-x: auto;
+    }
+    
+    .transaction-list-container table,
+    .candidate-block-container table {
+        min-width: 600px;
+    }
+}
+
+
+.candidate-block-container {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 7px;
+}
+
+.info-box{
+    margin-top: 15px;
 }

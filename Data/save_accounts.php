@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'name' => $name,
             'publicKey' => $publicKey,
             'privateKey' => $privateKey,
+            'address' => hash('sha256', $publicKey),
             'balance' => 0
         ];
         

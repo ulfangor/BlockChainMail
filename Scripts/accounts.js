@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             row.innerHTML = `
                 <td>${account.name}</td>
+                <td class="key-cell">${account.address}</td>
                 <td class="key-cell">${account.publicKey}</td>
                 <td class="key-cell">${account.privateKey}</td>
                 <td>

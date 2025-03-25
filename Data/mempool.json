@@ -1,11 +1,1 @@
-[
-    {
-        "sender": "04d054dc9adbfc96005e5771160e146cad075d4a6664950e003a56f27f79920e0bf782ce7ba185b21ab75e135877a5429ccaa24d87a83db5aae7e6b4100ad76844",
-        "receiver": "045e40a3bf0843a1583a26f7c2fdd1a4271141585d6d44f92f5309f02c436d35c4b4965b0745d9d83c20e01fbdcbee3f3bbccb001263e52a51d3ce7347d2423485",
-        "amount": 50,
-        "fee": 14,
-        "message": "jhgf",
-        "hash": "fec9ddcdb67d3c556ff450bd1a23dc1d14ffe10ce81673f98fd07e15748c22eb",
-        "timestamp": 1742850217
-    }
-]
+[]

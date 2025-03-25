@@ -34,6 +34,7 @@ include "../Pages/Header.php"
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Address</th>
                             <th>Public key</th>
                             <th>Private key</th>
                             <th>Actions</th>

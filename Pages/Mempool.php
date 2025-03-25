@@ -10,6 +10,7 @@
     <?php
     
     session_start();
+    ob_start();
     include '../Pages/Header.php';
     
     // Fonction pour charger les comptes depuis le fichier JSON
@@ -29,10 +30,10 @@
     }
     
     // Fonction pour mettre à jour le solde d'un compte
-    function updateAccountBalance($publicKey, $amount) {
+    function updateAccountBalance($address, $amount) {
         $accounts = loadAccounts();
         foreach ($accounts as &$account) {
-            if ($account['publicKey'] === $publicKey) {
+            if ($account['address'] === $address) {
                 $account['balance'] -= $amount;
                 break;
             }
@@ -148,7 +149,7 @@
             // Trouver le compte de l'expéditeur
             $senderAccount = null;
             foreach ($accounts as $account) {
-                if ($account['publicKey'] === $sender) {
+                if ($account['address'] === $sender) {
                     $senderAccount = $account;
                     break;
                 }
@@ -175,6 +176,7 @@
                 
                 // Redirect to prevent resubmission
                 header('Location: ' . $_SERVER['PHP_SELF']);
+                ob_end_clean();
                 exit();
             } else {
                 $error = "Balance too low to complete this transaction";
@@ -277,10 +279,12 @@
     foreach ($candidateBlock[0]['transactions'] as $transaction) {
         $totalValue += $transaction['amount'];
     }
+
+    ob_end_flush();
     ?>
     
-    <div class="container">
-        <h1>Mempool</h1>
+    <div class="mempool-main-container">
+        <h1>Transactions & Mempool</h1>
         
         <div class="transaction-form">
             <h2>Make a transaction</h2>
@@ -299,7 +303,7 @@
                     <select name="sender" id="sender" required>
                         <option value="">Select a sender</option>
                         <?php foreach ($accounts as $account): ?>
-                            <option value="<?php echo $account['publicKey']; ?>">
+                            <option value="<?php echo $account['address']; ?>">
                                 <?php echo $account['name'] . ' (' . $account['balance'] . ' CMC)'; ?>
                             </option>
                         <?php endforeach; ?>
@@ -311,7 +315,7 @@
                     <select name="receiver" id="receiver" required>
                         <option value="">Select a receiver</option>
                         <?php foreach ($accounts as $account): ?>
-                            <option value="<?php echo $account['publicKey']; ?>">
+                            <option value="<?php echo $account['address']; ?>">
                                 <?php echo $account['name']; ?>
                             </option>
                         <?php endforeach; ?>
@@ -334,13 +338,13 @@
                 </div>
                 
                 <div class="buttons">
-                    <button type="submit" name="submit">Complete transaction</button>
-                    <button type="reset">Clear</button>
+                    <button type="submit" name="submit" class="complete-btn">Complete transaction</button>
+                    <button type="reset" class="clear-btn">Clear</button>
                 </div>
             </form>
         </div>
         
-        <div class="transaction-list section">
+        <div class="transaction-list-container">
             <h2>MEMPOOL</h2>
             
             <?php if (empty($mempool)): ?>
@@ -365,8 +369,8 @@
                                 <td>
                                     <?php 
                                     foreach ($accounts as $account) {
-                                        if ($account['publicKey'] === $transaction['sender']) {
-                                            echo $account['name'] . ' ('.$account['publicKey'] . ')';
+                                        if ($account['address'] === $transaction['sender']) {
+                                            echo $account['name'] . ' ('.$account['address'] . ')';
                                             break;
                                         }
                                     }
@@ -375,8 +379,8 @@
                                 <td>
                                     <?php 
                                     foreach ($accounts as $account) {
-                                        if ($account['publicKey'] === $transaction['receiver']) {
-                                            echo $account['name'] . ' ('.$account['publicKey'] . ')';
+                                        if ($account['address'] === $transaction['receiver']) {
+                                            echo $account['name'] . ' ('.$account['address'] . ')';
                                             break;
                                         }
                                     }
@@ -386,15 +390,15 @@
                                 <td><?php echo $transaction['fee']; ?></td>
                                 <td><?php echo $transaction['message']; ?></td>
                                 <td><?php echo date('Y-m-d H:i:s', $transaction['timestamp']); ?></td>
-                                <td><?php echo $transaction['hash']; ?></td>
+                                <td class="key-cell"><?php echo $transaction['hash']; ?></td>
                                 <td>
                                     <form method="post" style="display: inline;">
                                         <input type="hidden" name="transaction_hash" value="<?php echo $transaction['hash']; ?>">
-                                        <button type="submit" name="add_to_candidate" class="action-btn">Add to block</button>
+                                        <button type="submit" name="add_to_candidate" class="add-btn">Add to block</button>
                                     </form>
                                     <form method="post" style="display: inline;">
                                         <input type="hidden" name="transaction_hash" value="<?php echo $transaction['hash']; ?>">
-                                        <button type="submit" name="delete_from_mempool" class="action-btn">Delete</button>
+                                        <button type="submit" name="delete_from_mempool" class="delete-btn">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -404,8 +408,8 @@
             <?php endif; ?>
         </div>
         
-        <div class="candidate-block section">
-            <h2>CANDIDATE BLOCK</h2>
+        <div class="candidate-block-container">
+            <h2>Candidate Block</h2>
             
             <?php if (empty($candidateBlock[0]['transactions'])): ?>
                 <p>No transaction currently in candidate block.</p>
@@ -429,8 +433,8 @@
                                 <td>
                                     <?php 
                                     foreach ($accounts as $account) {
-                                        if ($account['publicKey'] === $transaction['sender']) {
-                                            echo $account['name'] . ' ('.$account['publicKey'] . ')';
+                                        if ($account['address'] === $transaction['sender']) {
+                                            echo $account['name'] . ' ('.$account['address'] . ')';
                                             break;
                                         }
                                     }
@@ -439,8 +443,8 @@
                                 <td>
                                     <?php 
                                     foreach ($accounts as $account) {
-                                        if ($account['publicKey'] === $transaction['receiver']) {
-                                            echo $account['name'] . ' ('.$account['publicKey'] . ')';
+                                        if ($account['address'] === $transaction['receiver']) {
+                                            echo $account['name'] . ' ('.$account['address'] . ')';
                                             break;
                                         }
                                     }
@@ -450,11 +454,11 @@
                                 <td><?php echo $transaction['fee']; ?></td>
                                 <td><?php echo $transaction['message']; ?></td>
                                 <td><?php echo date('Y-m-d H:i:s', $transaction['timestamp']); ?></td>
-                                <td><?php echo $transaction['hash']; ?></td>
+                                <td class="key-cell"><?php echo $transaction['hash']; ?></td>
                                 <td>
                                     <form method="post">
                                         <input type="hidden" name="transaction_hash" value="<?php echo $transaction['hash']; ?>">
-                                        <button type="submit" name="remove_from_candidate" class="action-btn">Remove from block</button>
+                                        <button type="submit" name="remove_from_candidate" class="remove-btn">Remove from block</button>
                                     </form>
                                 </td>
                             </tr>
