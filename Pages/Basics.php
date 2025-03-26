@@ -57,18 +57,7 @@
             <div class="signature-display">
                 <h3>Signature</h3>
                 <div class="signature-output">
-                    <?php
-                        if (isset($_POST['hashButton'])) {
-                            // Récupérer le texte saisi
-                            $rawText = $_POST['rawText'];
-
-                            // Hasher le texte en SHA-256
-                            $hashedText = hash('sha256', $rawText);
-
-                            // Afficher le résultat
-                            echo htmlspecialchars($hashedText);
-                        }
-                    ?>
+                    
                 </div>
             </div>
             
