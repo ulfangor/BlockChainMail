@@ -1,16 +1,16 @@
 [
     {
         "name": "In\u00e8s",
-        "publicKey": "04fb40fdf9c5aa6e4e35b9f5764ca569b1f6f228cd6f32faa8281d26fd5f6c5ab57c7c8e61473aed483be962d28d68946d497723d9dac396c88818d1541ea45f7c",
-        "privateKey": "ad3e4909bd8b073446c9bc8825bd59f5da47d09aeb6c46770692b1db50029ee1",
-        "address": "f295fbb4b086816cf2d39c70be1cf96667f7cd15cd2afd17597a93914b6ad245",
-        "balance": 405
+        "publicKey": "0481836f1659c45068e1a1ab540f67914755c8bd450233b78584503afc87f12c32fa351b37d2ede75eb17e1d8540c8b86492efc39b1f45431aee7d9f34e72fd233",
+        "privateKey": "aa81785e25fe753b2e21633f8b717f11c76134a3246e490e0e829869e1d7edf3",
+        "address": "997b5c9e16b243fdf914ffd7573daf5b9e68e4a67a665b3d3e5b29494b324f2a",
+        "balance": 83
     },
     {
         "name": "Lena",
-        "publicKey": "04e8310f1117c15b6714bf7e23aaa9ef13e4eda0422a839ee02527ac276a489f87e4bc2de6e8c3ebc16a039c108a249a35ffcc184065dbc5e0ffb283ed02ed0d6c",
-        "privateKey": "722b223d073db0fa0b35edde9601bbd9a340fe0aebf5c43471787e14ebe491af",
-        "address": "c9277bbc3af0db164f8d70cd26128f98020ed9ddfbbad0f018c6a50b70f9bd53",
-        "balance": 0
+        "publicKey": "04ddfcd20fbe92f974cae076eb5b8ed1a0fce37f61a471501f4ddbeb580383dcdfa347670e98fe2af5d91445849352dc03f3ea2c4cefead984a5f532975da88c2a",
+        "privateKey": "e793c92d105e9e1b0a01ef2c5faf74483f3195fabdbdcff1d8b0566b8900b188",
+        "address": "51b5ce3552d93cfb15d996468f655d81f50b68618369dc5e722885560c7ac3c3",
+        "balance": 14
     }
 ]
