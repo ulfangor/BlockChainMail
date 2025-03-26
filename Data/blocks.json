@@ -5,7 +5,7 @@
         "hash": "000abc123genesis456def",
         "previous_hash": "0",
         "nonce": 42,
-        "data": "Bloc genesis - Première transaction blockchain"
+        "data": "genesis"
     },
     {
         "index": 1,
@@ -13,7 +13,7 @@
         "hash": "111def456transaction789ghi",
         "previous_hash": "000abc123genesis456def",
         "nonce": 17,
-        "data": "Transaction: Alice envoie 10 BTC à Bob"
+        "data": "deux transactions"
     },
     {
         "index": 2,
@@ -21,7 +21,7 @@
         "hash": "222ghi789mining012jkl",
         "previous_hash": "111def456transaction789ghi",
         "nonce": 33,
-        "data": "Récompense de minage pour le bloc 2 - 6.25 BTC"
+        "data": "15 transactions"
     },
     {
         "index": 3,
@@ -29,7 +29,7 @@
         "hash": "333jkl012smart456contract",
         "previous_hash": "222ghi789mining012jkl",
         "nonce": 55,
-        "data": "Déploiement d'un contrat intelligent pour échange de tokens"
+        "data": "bloc lambda"
     },
     {
         "index": 4,
@@ -37,7 +37,7 @@
         "hash": "444mno345supply678chain",
         "previous_hash": "333jkl012smart456contract",
         "nonce": 22,
-        "data": "Suivi de la chaîne d'approvisionnement - Livraison de marchandises"
+        "data": "je sais pas"
     },
     {
         "index": 5,
@@ -45,7 +45,7 @@
         "hash": "555pqr678nft901stu",
         "previous_hash": "444mno345supply678chain",
         "nonce": 44,
-        "data": "Création et vente d'un NFT unique - Art numérique"
+        "data": "milliards de dollars"
     },
     {
         "index": 6,
@@ -53,7 +53,7 @@
         "hash": "666stu901defi234xyz",
         "previous_hash": "555pqr678nft901stu",
         "nonce": 66,
-        "data": "Transaction DeFi - Prêt décentralisé de 5000 USDT"
+        "data": "encore un bloc"
     },
     {
         "index": 7,
@@ -61,7 +61,7 @@
         "hash": "777xyz234governance567tuv",
         "previous_hash": "666stu901defi234xyz",
         "nonce": 11,
-        "data": "Vote pour une proposition de gouvernance de protocole"
+        "data": "CMC > BTC"
     },
     {
         "index": 8,
@@ -69,7 +69,7 @@
         "hash": "888tuv567cross890border",
         "previous_hash": "777xyz234governance567tuv",
         "nonce": 77,
-        "data": "Transaction internationale cross-border sans intermédiaire"
+        "data": "Huitième bloc déjà"
     },
     {
         "index": 9,
@@ -77,6 +77,6 @@
         "hash": "999border890insurance123abc",
         "previous_hash": "888tuv567cross890border",
         "nonce": 88,
-        "data": "Contrat d'assurance décentralisé - Remboursement automatique"
+        "data": "Là c'est le dernier"
     }
 ]

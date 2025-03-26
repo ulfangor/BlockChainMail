@@ -72,3 +72,15 @@ h3, .public-key, .private-key {
     padding: 15px;
     margin: 25px;
 }
+
+.public-key, .private-key{
+    color: black;
+    font-size: 11px;
+    width: 250px;
+    height: 100px;
+}
+
+.keys-head-display.table{
+    width: 100%;
+    text-align: center;
+}

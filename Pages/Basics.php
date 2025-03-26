@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elliptic/6.5.4/elliptic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <link rel="stylesheet" href="../Styles/basics.css">
     <title>BlockChainMail</title>
 </head>
@@ -45,8 +47,15 @@
             <button class="generate-btn" type="submit">Generate Keys Pair</button>
 
             <div class="keys-head-display">
-                <h3>Public Key</h3>
-                <h3>Private Key</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Public Key</th>
+                            <th>Private Key</th>
+                        </tr>
+                    </thead>
+                </table>
+
             </div>
 
             <div class="keys-display">
@@ -61,9 +70,77 @@
                 </div>
             </div>
             
-            <div class="validation-message">Validation</div>
+            <div class="validation-message"></div>
 
         </div>
     </div>
 </body>
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Ensure elliptic library is accessible
+    const ec = new elliptic.ec('secp256k1');
+
+    const generateBtn = document.querySelector('.generate-btn');
+    const publicKeyTextarea = document.querySelector('.public-key');
+    const privateKeyTextarea = document.querySelector('.private-key');
+    const signatureOutput = document.querySelector('.signature-output');
+    const validationMessage = document.querySelector('.validation-message');
+
+    let originalHash = null;
+    let keyPair = null;
+
+    generateBtn.addEventListener('click', () => {
+        try {
+            // Générer une paire de clés ECDSA
+            keyPair = ec.genKeyPair();
+
+            // Obtenir les clés au format hexadécimal
+            const publicKey = keyPair.getPublic('hex');
+            const privateKey = keyPair.getPrivate('hex');
+
+            // Remplir les textarea
+            publicKeyTextarea.value = publicKey;
+            privateKeyTextarea.value = privateKey;
+
+            // Générer le hash original
+            originalHash = generateHash(publicKey, privateKey);
+            signatureOutput.textContent = originalHash;
+
+            // Message de validation initial
+            validationMessage.textContent = 'Signature générée et valide';
+            validationMessage.style.color = 'green';
+        } catch (error) {
+            console.error('Key generation error:', error);
+            validationMessage.textContent = 'Erreur de génération de clés';
+            validationMessage.style.color = 'red';
+        }
+    });
+
+    // Écouter les changements dans les textarea
+    publicKeyTextarea.addEventListener('input', validateSignature);
+    privateKeyTextarea.addEventListener('input', validateSignature);
+
+    function validateSignature() {
+        if (originalHash === null) return;
+
+        const currentPublicKey = publicKeyTextarea.value;
+        const currentPrivateKey = privateKeyTextarea.value;
+
+        const currentHash = generateHash(currentPublicKey, currentPrivateKey);
+
+        if (currentHash !== originalHash) {
+            validationMessage.textContent = 'Signature non valide - Les clés ont été modifiées';
+            validationMessage.style.color = 'red';
+        } else {
+            validationMessage.textContent = 'Signature valide';
+            validationMessage.style.color = 'green';
+        }
+    }
+
+    function generateHash(publicKey, privateKey) {
+        return CryptoJS.SHA256(publicKey + privateKey).toString();
+    }
+});
+</script>
 </html>

@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Explorateur de Blocs Blockchain</title>
+    <title>Explorer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -135,17 +135,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 </head>
 <body>
     <div class="container">
-        <h1>Explorateur de Blocs Blockchain</h1>
+        <h1>Explorer</h1>
         
         <div class="search-section">
             <div class="search-form">
                 <form method="get">
                     <select name="search_type" onchange="toggleSearchFields(this)">
-                        <option value="">Choisir un type de recherche</option>
-                        <option value="list_all">Lister Tous les Blocs</option>
+                        <option value="">Type de recherche</option>
+                        <option value="list_all">Tous les Blocs</option>
                         <option value="index">Recherche par Index</option>
                         <option value="hash">Recherche par Hash</option>
-                        <option value="data">Recherche par Données</option>
+                        <option value="data">Recherche par mot-clé dans toutes les données</option>
                     </select>
                     
                     <div id="index_field" style="display:none;">
