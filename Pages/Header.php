@@ -21,6 +21,7 @@
                             <a href="/BlockChainMail/Pages/Mempool.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Mempool</a>
                             <a href="/BlockChainMail/Pages/Mining.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Mining</a>
                             <a href="/BlockChainMail/Pages/Blockchain.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Blockchain</a>
+                            <a href="/BlockChainMail/Pages/Explorer.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Explorer</a>
                             <a href="/BlockChainMail/Pages/MiniGame.php" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Mini-Game</a>
                         </div>
                     </div>

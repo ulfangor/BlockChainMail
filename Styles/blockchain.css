@@ -1,0 +1,87 @@
+body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    padding: 2rem;
+    text-align: center;
+}
+
+.block-chain {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 2rem 0;
+    margin-top: 35px;
+    margin-bottom: 45px;
+}
+
+.block-node {
+    background:rgba(31,41,55);
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-width: 300px;
+    margin: 0 2.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.block-node:not(:first-child)::before {
+    content: '➤';
+    position: absolute;
+    left: -3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color:rgb(55, 98, 179);
+    font-size: 1.5rem;
+}
+
+.block-header {
+    border-bottom: 2px solid rgb(55, 98, 179);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+.block-title {
+    font-size: 1.4rem;
+    margin: 0 0 0.5rem 0;
+    color:rgb(55, 98, 179);
+}
+
+.block-meta {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.block-hover-info {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.block-node:hover {
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+.block-node:hover .block-hover-info {
+    max-height: 500px;
+    opacity: 1;
+    padding-top: 1rem;
+}
+
+.data-label {
+    color:rgb(55, 98, 179);
+    font-weight: bold;
+}
+
+.search-redirection{
+    background-color:rgb(55, 98, 179);
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 35px;
+    border-radius: 7px;
+    font-size: 20px;
+}
