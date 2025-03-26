@@ -1,0 +1,147 @@
+:root {
+    --primary: rgb(55, 98, 179);
+    --surface: rgba(31,41,55);
+    --text: #e0e0e0;
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 2rem;
+}
+
+.blockchain-explorer {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.search-panel {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 1rem;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.search-form {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 1rem;
+}
+
+.search-input {
+    padding: 0.8rem;
+    background: rgba(17,24,39);
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    color: var(--text);
+}
+
+.show-all-btn {
+    background: var(--primary);
+    color: var(--background);
+    border: none;
+    padding: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-type {
+    display: flex;
+    gap: 1rem;
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+}
+
+.search-type label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.block-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.block-card {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.block-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.block-genesis {
+    border-color: #ffd700;
+}
+
+.block-header {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #383838;
+}
+
+.block-title {
+    margin: 0;
+    color: var(--primary);
+}
+
+.block-main-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    font-size: 0.9em;
+}
+
+.block-extended-details {
+    display: none;
+    background: rgba(45, 45, 45, 0.9);
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+}
+
+.block-card:hover .block-extended-details {
+    display: block;
+}
+
+.data-label {
+    color: #888;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+.full-text {
+    word-break: break-all;
+    user-select: text;
+    cursor: text;
+}
+
+.transactions-list {
+    max-height: 200px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+}

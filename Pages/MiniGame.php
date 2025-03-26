@@ -10,7 +10,7 @@ $accounts = json_decode(file_get_contents($accountsFile), true);
     <link rel="stylesheet" href="../Styles/minigame.css">
 </head>
 <body>
-    <div class="container">
+    <div class="all-container">
         <h1>Roulette du Casino</h1>
         
         <div class="player-selection">
