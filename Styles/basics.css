@@ -68,19 +68,48 @@
     text-align: center;
 }
 
-h3, .public-key, .private-key {
+.public-key, .private-key {
     padding: 15px;
     margin: 25px;
+    color: white;
+    font-weight: bold;
+    font-style: normal;
+}
+
+.ecdsa-container h3{
+    color: white;
+    font-weight: bold;
+    font-style: normal;
+    margin-top: 15px;
+    margin-bottom: 25px;
 }
 
 .public-key, .private-key{
-    color: black;
+    color: white;
+    font-weight: 100;
     font-size: 11px;
     width: 250px;
     height: 100px;
+    background-color: rgba(17,24,39) ;
+    border-radius: 5px;
 }
 
-.keys-head-display.table{
-    width: 100%;
+.keys-head-display table{
+    width: 600px;
     text-align: center;
+    margin-top: 25px;
+}
+
+.signature-output{
+    margin-bottom: 15px;
+    background-color: rgba(17,24,39) ;
+    border-radius: 5px;
+    padding: 6px;
+    width: 551.5px;
+    height: 36px;
+}
+
+.validation-message{
+    width: 212.27px;
+    height: 24px;
 }

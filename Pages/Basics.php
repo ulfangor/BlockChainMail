@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             signatureOutput.textContent = originalHash;
 
             // Message de validation initial
-            validationMessage.textContent = 'Signature générée et valide';
+            validationMessage.textContent = 'Signature generated and valid';
             validationMessage.style.color = 'green';
         } catch (error) {
             console.error('Key generation error:', error);
@@ -130,10 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentHash = generateHash(currentPublicKey, currentPrivateKey);
 
         if (currentHash !== originalHash) {
-            validationMessage.textContent = 'Signature non valide - Les clés ont été modifiées';
+            validationMessage.textContent = 'Signature not valid - A modification had been made !';
             validationMessage.style.color = 'red';
         } else {
-            validationMessage.textContent = 'Signature valide';
+            validationMessage.textContent = 'Signature valid';
             validationMessage.style.color = 'green';
         }
     }
