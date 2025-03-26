@@ -1,1 +1,82 @@
-[]
+[
+    {
+        "index": 0,
+        "timestamp": 1709990400,
+        "hash": "000abc123genesis456def",
+        "previous_hash": "0",
+        "nonce": 42,
+        "data": "Bloc genesis - Première transaction blockchain"
+    },
+    {
+        "index": 1,
+        "timestamp": 1710076800,
+        "hash": "111def456transaction789ghi",
+        "previous_hash": "000abc123genesis456def",
+        "nonce": 17,
+        "data": "Transaction: Alice envoie 10 BTC à Bob"
+    },
+    {
+        "index": 2,
+        "timestamp": 1710163200,
+        "hash": "222ghi789mining012jkl",
+        "previous_hash": "111def456transaction789ghi",
+        "nonce": 33,
+        "data": "Récompense de minage pour le bloc 2 - 6.25 BTC"
+    },
+    {
+        "index": 3,
+        "timestamp": 1710249600,
+        "hash": "333jkl012smart456contract",
+        "previous_hash": "222ghi789mining012jkl",
+        "nonce": 55,
+        "data": "Déploiement d'un contrat intelligent pour échange de tokens"
+    },
+    {
+        "index": 4,
+        "timestamp": 1710336000,
+        "hash": "444mno345supply678chain",
+        "previous_hash": "333jkl012smart456contract",
+        "nonce": 22,
+        "data": "Suivi de la chaîne d'approvisionnement - Livraison de marchandises"
+    },
+    {
+        "index": 5,
+        "timestamp": 1710422400,
+        "hash": "555pqr678nft901stu",
+        "previous_hash": "444mno345supply678chain",
+        "nonce": 44,
+        "data": "Création et vente d'un NFT unique - Art numérique"
+    },
+    {
+        "index": 6,
+        "timestamp": 1710508800,
+        "hash": "666stu901defi234xyz",
+        "previous_hash": "555pqr678nft901stu",
+        "nonce": 66,
+        "data": "Transaction DeFi - Prêt décentralisé de 5000 USDT"
+    },
+    {
+        "index": 7,
+        "timestamp": 1710595200,
+        "hash": "777xyz234governance567tuv",
+        "previous_hash": "666stu901defi234xyz",
+        "nonce": 11,
+        "data": "Vote pour une proposition de gouvernance de protocole"
+    },
+    {
+        "index": 8,
+        "timestamp": 1710681600,
+        "hash": "888tuv567cross890border",
+        "previous_hash": "777xyz234governance567tuv",
+        "nonce": 77,
+        "data": "Transaction internationale cross-border sans intermédiaire"
+    },
+    {
+        "index": 9,
+        "timestamp": 1710768000,
+        "hash": "999border890insurance123abc",
+        "previous_hash": "888tuv567cross890border",
+        "nonce": 88,
+        "data": "Contrat d'assurance décentralisé - Remboursement automatique"
+    }
+]
