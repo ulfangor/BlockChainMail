@@ -1,4 +1,5 @@
 <?php
+
 // Fonction pour lire les fichiers JSON
 function readJsonFile($path) {
     if (!file_exists($path)) {
@@ -106,15 +107,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Blockchain Mining Interface</title>
+    <link rel="stylesheet" href="../Styles/mining.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
-<body class="bg-gray-100 p-8">
-    <div class="container mx-auto grid grid-cols-3 gap-6">
+<body>
+    <?php
+        include '../Pages/Header.php';
+    ?>
+    <h1>Mining</h1>
+    <div class="mining-body">
         <!-- Mineur Selection -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-bold mb-4">Sélection du Mineur</h2>
-            <select id="minerSelect" class="w-full p-2 border rounded">
+        <div class="miner-container">
+            <h4>Miner</h4>
+            <select id="minerSelect">
                 <?php 
                 foreach ($accounts as $account) {
                     echo "<option value='{$account['address']}'>{$account['name']}</option>";
@@ -124,29 +130,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <!-- Bloc Candidat -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-bold mb-4">Bloc Candidat</h2>
-            <div id="candidateBlockInfo">
-                <div class="mb-4">
+        <div class="candidate-container">
+            <h4>Candidate Block</h4>
+            <div class="candidateBlockInfo">
+                <div class="candidate-header">
                     <strong>Index:</strong> <?php echo $candidateBlock['index']; ?><br>
                     <strong>Transactions:</strong> <?php echo count($candidateBlock['transactions']); ?><br>
-                    <strong>Total Value:</strong> <?php 
+                    <strong>Value:</strong> <?php 
                         $totalValue = array_reduce($candidateBlock['transactions'], function($sum, $tx) {
                             return $sum + $tx['amount'];
                         }, 0);
                         echo $totalValue;
                     ?>
                 </div>
-                <hr class="my-4">
-                <div>
-                    <h3 class="font-bold mb-2">Transactions:</h3>
+                <hr>
+                <div class="candidate-body">
+                    <h5>Transactions:</h5>
                     <div id="transactionsList">
-                        <div class="bg-gray-100 p-2 rounded mb-2">
-                            <strong>Coinbase Reward:</strong> <?php echo $stats['coinbase']; ?>
+                        <div class="coinbase">
+                            <strong>Coinbase:</strong> <?php echo $stats['coinbase']; ?>
                         </div>
                         <?php 
                         foreach ($candidateBlock['transactions'] as $tx) {
-                            echo "<div class='bg-gray-100 p-2 rounded mb-2'>";
+                            echo "<div class='transaction-info'>";
                             echo "<strong>Sender:</strong> " . substr($tx['sender'], 0, 10) . "...<br>";
                             echo "<strong>Receiver:</strong> " . substr($tx['receiver'], 0, 10) . "...<br>";
                             echo "<strong>Amount:</strong> " . $tx['amount'] . "<br>";
@@ -157,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
-            <button id="mineBlockBtn" class="mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:opacity-50" 
+            <button id="mineBlockBtn" class="mineBlockBtn" 
                     <?php 
                     // Disable button if no transactions (except for genesis block)
                     if ($candidateBlock['index'] !== "0" && count($candidateBlock['transactions']) <= 1) {
@@ -169,13 +175,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <!-- Mining Progress -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-bold mb-4">Progression du Minage</h2>
-            <div id="miningProgress" class="text-center">
+        <div class="mining-container">
+            <h4>Mining Progress</h4>
+            <div class="miningProgress">
                 <div id="progressBar" class="w-full bg-gray-200 h-4 rounded">
                     <div id="progressBarFill" class="bg-green-500 h-4 rounded w-0"></div>
                 </div>
-                <p id="miningStatus" class="mt-4">En attente de minage...</p>
+                <p id="miningStatus">Mining not started</p>
             </div>
         </div>
     </div>
