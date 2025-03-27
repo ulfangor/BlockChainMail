@@ -18,7 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
             element.classList.add('selected');
             
             selectedBet = element.classList.contains('bet-number') 
-                ? { type: 'number', value: parseInt(element.dataset.number) }
+                ? { 
+                    type: 'number', 
+                    value: parseInt(element.dataset.number),
+                    color: element.dataset.color
+                }
                 : { 
                     type: element.dataset.type === 'rouge' || element.dataset.type === 'noir' ? 'color' : 'other', 
                     value: element.dataset.type 
@@ -32,17 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
         resultCard.classList.add('result-card');
         
         const resultText = resultData.win 
-            ? `🎉 Félicitations ! 
-               Numéro gagnant : ${resultData.result}
-               Vous avez gagné ${Math.abs(resultData.winnings)} CMC !` 
-            : `😔 Désolé ! 
-               Numéro sorti : ${resultData.result}
-               Vous avez perdu ${Math.abs(resultData.winnings)} CMC.`;
+            ? `Winning number: ${resultData.result}. 
+               You won ${Math.abs(resultData.winnings)} CMC !` 
+            : `Winning number: ${resultData.result}. 
+               You lost your bet (${Math.abs(resultData.winnings)} CMC).`;
         
         resultCard.innerHTML = `
-            <h2>${resultData.win ? 'Victoire !' : 'Perdu !'}</h2>
+            <h2>${resultData.win ? 'VICTORY' : 'DEFEAT'}</h2>
             <p>${resultText}</p>
-            <button id="close-result">Fermer</button>
+            <button id="close-result">Close</button>
         `;
 
         // Vider l'overlay et ajouter la carte
@@ -72,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newBalance = parseFloat(playerSelect.selectedOptions[0].dataset.balance) + resultData.winnings;
         playerSelect.selectedOptions[0].dataset.balance = newBalance;
         playerSelect.selectedOptions[0].text = 
-            `${player} (Solde: ${newBalance} CMC)`;
+            `${player} (${newBalance} CMC)`;
     }
 
     placeBetButton.addEventListener('click', () => {
@@ -82,23 +84,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Validation des entrées
         if (!selectedBet) {
-            alert('Veuillez sélectionner un type de mise');
+            alert('Select bet type');
             return;
         }
 
         if (isNaN(betAmount) || betAmount <= 0) {
-            alert('Veuillez entrer un montant de mise valide');
+            alert('Select valid bet value');
             return;
         }
 
         if (betAmount > currentBalance) {
-            alert('Solde insuffisant');
+            alert('Balance too low');
             return;
         }
 
         // Désactiver le bouton pendant le traitement
         placeBetButton.disabled = true;
-        resultDisplay.innerHTML = 'Traitement en cours...';
+        resultDisplay.innerHTML = 'The wheel is turning !';
 
         fetch('../Data/roulette.php', {
             method: 'POST',

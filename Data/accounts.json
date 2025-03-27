@@ -4,20 +4,13 @@
         "publicKey": "0481836f1659c45068e1a1ab540f67914755c8bd450233b78584503afc87f12c32fa351b37d2ede75eb17e1d8540c8b86492efc39b1f45431aee7d9f34e72fd233",
         "privateKey": "aa81785e25fe753b2e21633f8b717f11c76134a3246e490e0e829869e1d7edf3",
         "address": "997b5c9e16b243fdf914ffd7573daf5b9e68e4a67a665b3d3e5b29494b324f2a",
-        "balance": 151
+        "balance": 87.5
     },
     {
         "name": "Lena",
         "publicKey": "04ddfcd20fbe92f974cae076eb5b8ed1a0fce37f61a471501f4ddbeb580383dcdfa347670e98fe2af5d91445849352dc03f3ea2c4cefead984a5f532975da88c2a",
         "privateKey": "e793c92d105e9e1b0a01ef2c5faf74483f3195fabdbdcff1d8b0566b8900b188",
         "address": "51b5ce3552d93cfb15d996468f655d81f50b68618369dc5e722885560c7ac3c3",
-        "balance": 160
-    },
-    {
-        "name": "test",
-        "publicKey": "04df0b53f647f3e23eac7a21d51c670ee5e0237a89a78670a5461f892a7b1cff95ff54fab370eef1f62aab1d232369ce05ef346fe4b5b2ff7738e7949ec2226c4f",
-        "privateKey": "1542d3926a98735dd8856a0788d300ca2a366c7d22845d5edbd9789dfc88a8a1",
-        "address": "ed253e81b810fe89b1a6e6282a1e5d6b3575174f3143e7f60dae14a4e765d668",
-        "balance": 100
+        "balance": 230.2
     }
 ]
